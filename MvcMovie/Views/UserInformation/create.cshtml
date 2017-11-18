@@ -1,0 +1,45 @@
+@model MvcMovie.Models.UserInformation
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+@using (Html.BeginForm()) {
+
+    <fieldset>
+        <legend>Movie</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LoginName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LoginName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PassWord)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PassWord)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserName)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}

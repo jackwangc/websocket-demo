@@ -1,0 +1,20 @@
+D:\asp.net core\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.deps.json
+D:\asp.net core\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.runtimeconfig.json
+D:\asp.net core\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.runtimeconfig.dev.json
+D:\asp.net core\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.dll
+D:\asp.net core\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.pdb
+D:\asp.net core\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.csproj.CoreCompileInputs.cache
+D:\asp.net core\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.AssemblyInfoInputs.cache
+D:\asp.net core\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.AssemblyInfo.cs
+D:\asp.net core\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.dll
+D:\asp.net core\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.pdb
+E:\git of demo\websocket-demo\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.deps.json
+E:\git of demo\websocket-demo\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.runtimeconfig.json
+E:\git of demo\websocket-demo\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.runtimeconfig.dev.json
+E:\git of demo\websocket-demo\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.dll
+E:\git of demo\websocket-demo\MvcMovie\bin\Debug\netcoreapp2.0\MvcMovie.pdb
+E:\git of demo\websocket-demo\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.csproj.CoreCompileInputs.cache
+E:\git of demo\websocket-demo\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.AssemblyInfoInputs.cache
+E:\git of demo\websocket-demo\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.AssemblyInfo.cs
+E:\git of demo\websocket-demo\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.dll
+E:\git of demo\websocket-demo\MvcMovie\obj\Debug\netcoreapp2.0\MvcMovie.pdb

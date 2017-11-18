@@ -1,0 +1,160 @@
+@{
+    ViewData["Title"] = "scene";
+}
+
+<link rel="stylesheet" href="~/Scripts/Paint/bootstrap-colorpalette.css">
+<style type="text/css">
+       #canvas{
+            border: 1px solid #333;
+            display: block;
+            margin:20px auto;
+           
+         }
+         
+</style>
+
+<div class="row">
+ <div class="col-md-8">   
+   <div class="box">
+       <div class="box-header">
+          <h3 class="box-title">画板</h3>
+       </div>
+       <div class="box-body">
+          <div class="col-xs-12" >
+             <canvas id="canvas" width="600px" height="400px"></canvas>
+           </div>
+       </div>
+       <div class="box-footer">
+          <div class="row">
+              <div class="col-md-4">
+                  <div class="btn-group">
+                      <input id="selected-color1">
+                       <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">color</a>
+                       <ul class="dropdown-menu">
+                       <li><div id="colorpalette1"></div></li>
+                      </ul>
+                   </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="form-group">
+                      <label>lineWidth</label>
+                      <select id="lineWidth">
+                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                      </select>
+                   </div>
+               </div>
+               <div class="col-md-4">
+                    <a onclick="ClearArea()">橡皮擦</a>
+               </div>
+           </div>
+       </div>
+   </div>
+ </div>
+ <div class="col-md-4">
+     
+         <div class="small-box bg-aqua">
+             <div class="inner">
+                 <h3>你猜我画</h3>
+             </div>
+         </div>
+    
+     <div class="box">
+         <div class="box-header">
+             <h4>tips</h4>
+         </div>
+         <div class="box-body">
+             <textarea class="form-control" rows="3" readonly="readonly" id="textshowDraw"></textarea>
+         </div>
+     </div>
+     <div class="box">
+          <div class="box-header">
+               <h4>please enter your answer</h4>
+               <a class="btn btn-mini dropdown-toggle" id="sendAnswerButtonDraw">send</a>
+          </div>
+          <div class="box-footer">
+               <input class="text">
+          </div>
+     </div>
+   </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/Paint/bootstrap-colorpalette.js"></script>
+    <script type="text/javascript">
+    $("#colorpalette1").colorPalette().on("selectColor",function(e){
+        $("#selected-color1").val(e.color);
+    });
+
+    var canvas=document.getElementById("canvas");
+    var ctx=canvas.getContext("2d");
+
+    var size = document.getElementById("lineWidth");
+    var color = document.getElementById("selected-color1");
+
+    var mousePressed=false;
+    var lastX,lastY;
+
+    $("#canvas").mousedown(function(e){
+        mousePressed=true;
+        Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
+    })
+
+    $("#canvas").mousemove(function(e){
+        if(mousePressed){
+            Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
+        }
+    })
+
+    $("#canvas").mouseup(function(e){
+        mousePressed=false;
+    })
+
+    $("#canvas").mouseleave(function(e){
+        mousePressed=false;
+    })
+
+
+    function Draw(x,y,isDown){
+        if(isDown){
+            ctx.beginPath();
+            ctx.lineWidth=$("#lineWidth").val();
+            ctx.strokeStyle=color.value;
+            ctx.moveTo(lastX,lastY);
+            ctx.lineTo(x,y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        lastX=x;
+        lastY=y;
+    }
+
+    function ClearArea(){
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
+    </script>
+    <script type="text/javascript">
+    var scheme = document.location.protocol == "https:" ? "wss" : "ws";
+    var port = document.location.port ? (":" + document.location.port) : "";
+    var connectionUrl = scheme + "://" + document.location.hostname + port + "/ws"
+    var socket = new WebSocket(connectionUrl);
+
+    socket.onopen=function(evt){
+        console.log(socket.readyState);
+
+    }
+
+    
+    socket.onmessage=function(evt){
+        var data= evt.data;
+        console.log(data);
+        $("#textshowDraw").val(data);
+    }
+
+    socket.onclose=function(evt){
+
+    }
+    </script>
+}

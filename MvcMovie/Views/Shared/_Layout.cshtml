@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+      <meta charset="utf-8">
+      <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+      <title>WebApplication</title>
+      <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link rel="stylesheet" href="~/AdminLTE/plugins/font-awesome/css/font-awesome.css">
+        <link rel="stylesheet" href="~/AdminLTE/plugins/ionicons/css/ionicons.css">
+        <link rel="stylesheet" href="~/AdminLTE/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="~/AdminLTE/dist/css/admin-lte.css">
+        <link rel="stylesheet" href="~/AdminLTE/dist/css/skins/skin-blue.css">
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        <div class="wrapper">
+            <header class="main-header">
+               <a href="@Url.Action("Index","Home")" class="logo" >
+                  <span class="logo-mini">Adm</span>
+                   <span class="logo-lg"><b>管理系统</b></span>
+               </a>
+               <nav class="navbar navbar-static-top" role="navigation">
+                  <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                     <span class="sr-only">Toggle navigation</span>
+                  </a>
+                   <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="droppdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/AdminLTE/dist/img/user.svg" class="user-image" alt="User Image">
+                                 <span class="hidden-xs">user.name</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+               </nav>
+            </header>
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="~/AdminLTE/dist/img/user.svg" class="img-circle" alt="User Image">
+                        </div>
+                        <div class="pull-left info">
+                            <p>用户名</p>
+                            <a href="#"><i class="fa fa-circle text-success"></i>Online</a>
+                        </div>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li class="header">功能区</li>
+                        <li id="left-siderbar-menu-dashboard" class="treeview">
+                             <a href="#">
+                            <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+
+                            <li id="left-sidebar-menu-dashboard-dashboardV1"><a href="@Url.Action("Draw", "Paint")"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+                            <li id="left-sidebar-menu-dashboard-dashboardV2"><a href="@Url.Action("Index", "Paint")"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+            <div class="content-wrapper">
+
+              <section class="content-header">
+                <h1>
+                    @ViewBag.Title
+                    <small>@ViewBag.SubTitle</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i>@ViewBag.SubTitle</a></li>
+                    <li class="active">@ViewBag.Title</li>
+                </ol>
+              </section>
+              <section class="content">
+                @RenderBody()
+              </section>
+            </div>
+            <footer class="main-footer">
+              <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0
+               </div>
+            <strong>first version 2017 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> 
+            </footer>
+       </div>
+
+    <script src="~/AdminLTE/plugins/jquery/js/jQuery-2.1.4.min.js"></script>
+    
+    <script src="~/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/AdminLTE/plugins/slimscroll/js/jquery.slimscroll.min.js"></script>
+    <script src="~/AdminLTE/plugins/fastclick/js/fastclick.min.js"></script>
+    <script src="~/Scripts/Shared/_Layout.js"></script>
+    <script src="~/AdminLTE/dist/js/app.min.js"></script>
+    <script src="~/AdminLTE/plugins/jquery-validate/js/jquery.validate.unobtrusive.js"></script>
+    @RenderSection("menu",required: false)
+    @RenderSection("scripts", required: false)
+    </body>
+</html>
+
