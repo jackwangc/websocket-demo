@@ -138,7 +138,7 @@
     <script type="text/javascript">
     var scheme = document.location.protocol == "https:" ? "wss" : "ws";
     var port = document.location.port ? (":" + document.location.port) : "";
-    var connectionUrl = scheme + "://" + document.location.hostname + port + "/ws"
+    var connectionUrl = scheme + "://" + document.location.hostname + port;
     var socket = new WebSocket(connectionUrl);
    
 
@@ -160,12 +160,11 @@
         onClose(evt)
     }
     // 接收信息
-    //socket.onmessage=function(evt){
-    //    var data= evt.data;
-    //    console.log(data);
-    //    $("#textshow").val(data);
-
-   // }
+    socket.onmessage=function(evt){
+        var data= evt.data;
+        console.log(data);
+        $("#textshow").val(data);
+    }
 
     // 关闭连接 socket.close
 

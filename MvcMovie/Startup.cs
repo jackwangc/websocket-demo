@@ -60,29 +60,30 @@ namespace MvcMovie
                 ReceiveBufferSize = 4 * 1024
             };
             app.UseWebSockets(webSocketOptions);
+            app.UseMiddleware<ChatWebSocketMiddleware>();
 
             // 接受WebSOCKET 请求
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Path == "/ws")
-                {
-                    if (context.WebSockets.IsWebSocketRequest)
-                    {
-                        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await Echo(context, webSocket);
+            // app.Use(async (context, next) =>
+            // {
+            //     if (context.Request.Path == "/ws")
+            //     {
+            //         if (context.WebSockets.IsWebSocketRequest)
+            //         {
+            //             WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            //             await Echo(context, webSocket);
                         
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 400;
-                    }
-                }
-                else
-                {
-                    await next();
-                }
+            //         }
+            //         else
+            //         {
+            //             context.Response.StatusCode = 400;
+            //         }
+            //     }
+            //     else
+            //     {
+            //         await next();
+            //     }
 
-            });
+            // });
 
 
             app.UseMvc(routes =>
@@ -94,17 +95,17 @@ namespace MvcMovie
         }
 
         //发送接收消息
-        private async Task Echo(HttpContext context, WebSocket webSocket)
-            {
-            var buffer = new byte[1024 * 4];
-            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            while (!result.CloseStatus.HasValue)
-            {
-                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+        // private async Task Echo(HttpContext context, WebSocket webSocket)
+        //     {
+        //     var buffer = new byte[1024 * 4];
+        //     WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        //     while (!result.CloseStatus.HasValue)
+        //     {
+        //         await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
 
-                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            }
-            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-            }
+        //         result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        //     }
+        //     await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+        //     }
     }
 }
