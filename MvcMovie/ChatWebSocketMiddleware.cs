@@ -57,9 +57,11 @@ namespace MvcMovie
                 {
                     if(currentSocket.State != WebSocketState.Open)
                     {
+                        // break 直接跳出循环
                         break;
                     }
 
+                    // 结束本次循环
                     continue;
                 }
 
