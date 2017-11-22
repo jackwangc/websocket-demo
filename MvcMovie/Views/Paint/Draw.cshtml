@@ -72,10 +72,11 @@
      <div class="box">
           <div class="box-header">
                <h4>please enter your answer</h4>
-               <a class="btn btn-mini dropdown-toggle" id="sendAnswerButtonDraw">send</a>
+               
           </div>
           <div class="box-footer">
                <input class="text">
+               <a class="btn btn-mini dropdown-toggle" id="sendAnswerButtonDraw">send</a>
           </div>
      </div>
    </div>
@@ -95,47 +96,11 @@
 
     var mousePressed=false;
     var lastX,lastY;
-
-    $("#canvas").mousedown(function(e){
-        mousePressed=true;
-        Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
-    })
-
-    $("#canvas").mousemove(function(e){
-        if(mousePressed){
-            Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
-        }
-    })
-
-    $("#canvas").mouseup(function(e){
-        mousePressed=false;
-    })
-
-    $("#canvas").mouseleave(function(e){
-        mousePressed=false;
-    })
+    var receiveX,receiveY;
+    var receiveMousePressed;
+    var receiveColor,receiveSize,receiveClearAll;
 
 
-    function Draw(x,y,isDown){
-        if(isDown){
-            ctx.beginPath();
-            ctx.lineWidth=$("#lineWidth").val();
-            ctx.strokeStyle=color.value;
-            ctx.moveTo(lastX,lastY);
-            ctx.lineTo(x,y);
-            ctx.closePath();
-            ctx.stroke();
-        }
-        lastX=x;
-        lastY=y;
-    }
-
-    function ClearArea(){
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-    </script>
-    <script type="text/javascript">
     var scheme = document.location.protocol == "https:" ? "wss" : "ws";
     var port = document.location.port ? (":" + document.location.port) : "";
     var connectionUrl = scheme + "://" + document.location.hostname + port;
@@ -149,12 +114,69 @@
     
     socket.onmessage=function(evt){
         var data= evt.data;
-        console.log(data);
-        $("#textshowDraw").val(data);
+        var receiveData=JSON.parse(data);
+        $("#textshowDraw").val(receiveData.sendMessage.sendMousePressed+";"+receiveData.sendMessage.sendX+":"+receiveData.sendMessage.sendButtonMessage);
+        receiveX=receiveData.sendMessage.sendX;
+        receiveY=receiveData.sendMessage.sendY;
+        receiveMousePressed=receiveData.sendMessage.sendMousePressed;
+        receiveColor=receiveData.sendMessage.sendColor;
+        receiveSize=receiveData.sendMessage.sendSize;
+        receiveClearAll=receiveData.sendMessage.sendClearMessage;
+        console.log(receiveX+":"+receiveY+":"+receiveMousePressed);
+        Draw(receiveX, receiveY, receiveMousePressed);
+        if(receiveClearAll){
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        }
+        receiveClearAll=false;
+        
+
     }
+
+    //Draw(receiveX, receiveY, receiveMousePressed);
 
     socket.onclose=function(evt){
 
     }
+
+    $("#canvas").mousedown(function(e){
+        mousePressed=receiveMousePressed;
+        Draw(receiveX, receiveY, receiveMousePressed);
+    })
+
+    $("#canvas").mousemove(function(e){
+        if(receiveMousePressed){
+            Draw(receiveX,receiveY, receiveMousePressed);
+        }
+    })
+
+    $("#canvas").mouseup(function(e){
+        mousePressed=receiveMousePressed;
+    })
+
+    $("#canvas").mouseleave(function(e){
+        mousePressed=receiveMousePressed;
+    })
+
+    function Draw(x,y,isDown){
+        if(isDown){
+            ctx.beginPath();
+            ctx.lineWidth=receiveSize;
+            ctx.strokeStyle=receiveColor;
+            ctx.moveTo(lastX,lastY);
+            ctx.lineTo(x,y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        lastX=x;
+        lastY=y;
+    }
+
+    function ClearArea(){
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
+
+    
     </script>
 }

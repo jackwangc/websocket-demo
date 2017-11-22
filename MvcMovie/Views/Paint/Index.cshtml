@@ -96,23 +96,93 @@
     var mousePressed=false;
     var lastX,lastY;
 
+    var scheme = document.location.protocol == "https:" ? "wss" : "ws";
+    var port = document.location.port ? (":" + document.location.port) : "";
+    var connectionUrl = scheme + "://" + document.location.hostname + port;
+    var socket = new WebSocket(connectionUrl);
+    socket.onopen=function(evt){
+       
+    }
+
+
+
     $("#canvas").mousedown(function(e){
         mousePressed=true;
         Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
+        socket.send(JSON.stringify({
+            sendMessage:{
+                sendMousePressed: mousePressed,
+                sendX: e.pageX - $(this).offset().left,
+                sendY: e.pageY - $(this).offset().top
+            }
+        }));
     })
 
     $("#canvas").mousemove(function(e){
         if(mousePressed){
             Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
+            socket.send(JSON.stringify({
+            sendMessage:{
+                sendMousePressed: mousePressed,
+                sendX: e.pageX - $(this).offset().left,
+                sendY: e.pageY - $(this).offset().top,
+                sendColor: color.value,
+                sendSize: size.value
+            }
+        }));
         }
     })
 
+
     $("#canvas").mouseup(function(e){
         mousePressed=false;
+        socket.send(JSON.stringify({
+            sendMessage:{
+                sendMousePressed: mousePressed
+            }
+        }))
     })
 
     $("#canvas").mouseleave(function(e){
         mousePressed=false;
+        
+    })
+
+         // 客户端与 服务器的首次握手 ，建立连接并发送状态
+   socket.onopen=function(evt){
+       
+    } 
+    // websocket 关闭时的事件
+    socket.onclose=function(evt){
+        onClose(evt)
+    }
+    // 接收信息
+    socket.onmessage=function(evt){
+        var data= evt.data;
+        var receiveData=JSON.parse(data);
+        $("#textshow").val(receiveData.sendMessage.sendColor+";"+receiveData.sendMessage.sendSize+":"+receiveData.sendMessage.sendButtonMessage);
+        
+    }
+
+    // 关闭连接 socket.close
+
+    // 连接不上时显示的处理函数
+    function onClose(evt){
+        if(!navigator.onLine){
+            alert("you are offline")
+        }
+    }
+
+    $("#sendAnswerButton").click(function(){
+        var inputdata = String(document.getElementById("answerSend").value);
+        
+        if(inputdata!=null){
+          socket.send(JSON.stringify({
+              sendMessage:{
+                  sendButtonMessage: inputdata
+              }
+          })); 
+       }
     })
 
 
@@ -133,48 +203,11 @@
     function ClearArea(){
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        socket.send(JSON.stringify({
+              sendMessage:{
+                  sendClearMessage: true
+              }
+          }));
     }
-    </script>
-    <script type="text/javascript">
-    var scheme = document.location.protocol == "https:" ? "wss" : "ws";
-    var port = document.location.port ? (":" + document.location.port) : "";
-    var connectionUrl = scheme + "://" + document.location.hostname + port;
-    var socket = new WebSocket(connectionUrl);
-   
-
-    $("#sendAnswerButton").click(function(){
-        var inputdata = String(document.getElementById("answerSend").value);
-        
-        if(inputdata!=null){
-          socket.send(inputdata); 
-       }
-    })
-
-
-     // 客户端与 服务器的首次握手 ，建立连接并发送状态
-   socket.onopen=function(evt){
-       
-    } 
-    // websocket 关闭时的事件
-    socket.onclose=function(evt){
-        onClose(evt)
-    }
-    // 接收信息
-    socket.onmessage=function(evt){
-        var data= evt.data;
-        console.log(data);
-        $("#textshow").val(data);
-    }
-
-    // 关闭连接 socket.close
-
-    // 连接不上时显示的处理函数
-    function onClose(evt){
-        if(!navigator.onLine){
-            alert("you are offline")
-        }
-    }
-
-    //console.log(data);
     </script>
 }
